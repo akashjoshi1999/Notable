@@ -10,4 +10,8 @@ export default defineConfig({
         }),
         react(),
     ],
+    build: {
+        outDir: 'public/build', // Specify where you want the build to go
+        // You can customize this path to match your Laravel public directory structure
+    }
 });
