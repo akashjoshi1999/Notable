@@ -1,15 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import axios from 'axios';
 import NoteCard from './NoteCard';
 
-const NoteList = () => {
-  const [notes, setNotes] = useState([]);
-
+const NoteList = ({ notes, setNotes, onEdit }) => {
   useEffect(() => {
     const fetchNotes = async () => {
       try {
         const response = await axios.get('/notes');
-        console.log(response.data);
         setNotes(response.data);
       } catch (error) {
         console.error('Error fetching notes:', error);
@@ -17,7 +14,7 @@ const NoteList = () => {
     };
 
     fetchNotes();
-  }, []);
+  }, [setNotes]);
 
   const handleEdit = (updatedNote) => {
     setNotes(notes.map(note => (note.id === updatedNote.id ? updatedNote : note)));
@@ -34,9 +31,9 @@ const NoteList = () => {
           key={note.id}
           id={note.id}
           image={note.image}
-          title={note.title}
+          description={note.description}
           content={note.content}
-          onEdit={handleEdit}
+          onEdit={onEdit}
           onDelete={handleDelete}
         />
       ))}

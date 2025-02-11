@@ -9,22 +9,16 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import axios from 'axios';
 import { useState } from 'react';
 
-const NoteCard = ({ id, image, title, content, onEdit, onDelete }) => {
-  const [note, setNote] = useState({ id, image, title, content });
+const NoteCard = ({ id, image, description, content, onEdit, onDelete }) => {
+  const [note, setNote] = useState({ id, image, description, content });
 
-  const handleEdit = async () => {
-    try {
-      const response = await axios.put(`/api/notes/${note.id}`, note);
-      setNote(response.data);
-      if (onEdit) onEdit(response.data);
-    } catch (error) {
-      console.error('Error updating note:', error);
-    }
+  const handleEdit = () => {
+    onEdit(note);
   };
 
   const handleDelete = async () => {
     try {
-      await axios.delete(`/api/notes/${note.id}`);
+      await axios.delete(`/notes/${note.id}`);
       if (onDelete) onDelete(note.id);
     } catch (error) {
       console.error('Error deleting note:', error);
@@ -37,14 +31,11 @@ const NoteCard = ({ id, image, title, content, onEdit, onDelete }) => {
         component="img"
         height="140"
         image={note.image}
-        alt={note.title}
+        alt={note.name}
       />
       <CardContent>
-        <Typography gutterBottom variant="h5" component="div">
-          {note.title}
-        </Typography>
         <Typography variant="body2" color="text.secondary">
-          {note.content}
+          {note.description}
         </Typography>
       </CardContent>
       <CardActions>
